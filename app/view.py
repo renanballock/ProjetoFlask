@@ -33,11 +33,10 @@ def contatoLista():
         dados = dados.filter_by(nome=pesquisa)
     context={'dados': dados.all()}
 
-    for linha in dados:
-        print(linha)
-        print(linha.email)
-        print(linha.assunto)
-        print(linha.respondido)
-
 
     return render_template('contato_lista.html',context=context)
+
+@app.route('/contato/<int:id>')
+def contatoDetail(id):
+    obj=Contato.query.get(id)
+    return render_template('contato_detail.html', obj=obj)
