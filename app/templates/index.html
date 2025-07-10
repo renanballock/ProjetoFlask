@@ -12,6 +12,9 @@
     <div>
         <p> Bem vindos a aula de Flask!!! </p>
         <p>Olá, {{context.usuario}} Você tem {{context.idade}}.</p>
+
+        <a href="{{url_for('cadastro')}}" class="btn btn-primary">Faça seu cadastro</a>
+
         <img src="{{url_for('static', filename='img/senai.png')}}">
     </div>
 
