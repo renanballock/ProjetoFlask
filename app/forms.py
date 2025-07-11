@@ -29,6 +29,7 @@ class UserForm(FlaskForm):
 
             db.session.add(user)
             db.session.commit()
+            return(user)
 
 
 class ContatoForm(FlaskForm):
