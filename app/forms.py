@@ -7,11 +7,11 @@ from app.models import Contato, User
 
 class UserForm(FlaskForm):
     nome = StringField('Nome', validators=[DataRequired()])
-    sobrenome = StringField('Nome', validators=[DataRequired()])
+    sobrenome = StringField('Sobrenome', validators=[DataRequired()])
     email = StringField('E-mail', validators=[DataRequired(), Email()])
     senha = PasswordField('Senha', validators=[DataRequired()]) 
     confirmacao_senha = PasswordField('Confirmação de Senha', validators=[DataRequired(), EqualTo('senha')])
-    btnSubtmit = SubmitField('Cadastrar')
+    btnSubmit = SubmitField('Cadastrar')
 
     def validade_email(self, email):
         user = User.query.filter_by(email=email.data).first()
