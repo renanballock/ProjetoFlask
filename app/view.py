@@ -21,7 +21,9 @@ def homepage():
 def cadastro():
     form= UserForm()
     if form.validate_on_submit():
-        print(cadastro)
+        user = form.save()
+        login_user(user, remember=True)
+        return redirect(url_for('homepage'))
     return render_template('cadastro.html', form=form)
 
 @app.route('/contato/', methods=['GET','POST'])
