@@ -7,7 +7,7 @@ bcrypt=Bcrypt()
 
 
 from app import db, Bcrypt
-from app.models import Contato, User
+from app.models import Contato, User, Post
 
 class UserForm(FlaskForm):
     nome = StringField('Nome', validators=[DataRequired()])
@@ -23,7 +23,7 @@ class UserForm(FlaskForm):
             raise ValidationError('E-mail já cadastrado.')
         
     def save(self):
-            senha = bcrypt.generate_password_hash(self.senha.data).decode('utf-8'),
+            senha = bcrypt.generate_password_hash(self.senha.data.encode('utf-8'))
             user = User(
                 nome = self.nome.data,
                 sobrenome = self.sobrenome.data,
@@ -35,7 +35,20 @@ class UserForm(FlaskForm):
             db.session.commit()
             return(user)
 
+class LoginForm(FlaskForm):
+    email = StringField('E-mail', validators=[DataRequired(), Email()])
+    senha = PasswordField('Senha', validators=[DataRequired()])
+    btnSubmit = SubmitField('Entrar')
 
+    def login(self):
+        user = User.query.filter_by(email=self.email.data).first()
+        if user:
+             if bcrypt.check_password_hash(user.senha, self.senha.data.encode('utf-8')):
+                return user
+             else:
+                 raise Exception('Senha incorreta.')
+        else:
+            raise Exception('Usuário não encontrado.')
 class ContatoForm(FlaskForm):
     nome = StringField('Nome', validators=[DataRequired()])
     email = StringField('E-mail', validators=[DataRequired(), Email()])
@@ -53,3 +66,16 @@ class ContatoForm(FlaskForm):
 
         db.session.add(contato)
         db.session.commit()
+
+class PostForm(FlaskForm):
+    mensagem = StringField('Mensagem', validators=[DataRequired()])
+    btnSubmit = SubmitField('Enviar')
+
+    def save(self, user_id):
+        post = Post(
+            mensagem = self.mensagem.data,
+            user_id = user_id
+        )
+        db.session.add(post)
+        db.session.commit()
+        return post
