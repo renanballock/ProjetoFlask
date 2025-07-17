@@ -4,7 +4,7 @@ from flask_login import UserMixin
 #from flask_sqlalchemy import SQLAlchemy
 @login_manager.user_loader  
 def load_user(user_id):
-    return Contato.query.get(int(user_id))  
+    return User.query.get(int(user_id))  
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -28,3 +28,6 @@ class Post(db.Model):
     data_criacao = db.Column(db.DateTime, default=datetime.now)
     mensagem = db.Column(db.String, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+    def msg_resumo(self):
+        return f"{self.mensagem[:10]}..."
