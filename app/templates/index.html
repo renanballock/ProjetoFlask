@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <div>
+        {% include 'nav.html' %}
+        <hr>
+    </div>
+    <div>
+        {% if current_user.is_authenticated %}
+        <span class="btn btn-primary">{{current_user.nome}} {{current_user.sobrenome}}</span>
+        <a href="{{url_for('logout')}}" class="btn btn-danger">Sair</a>
+        {% else %}
+
+        <form action="" method="post" class="row m-5 py-5 px-5 round border shadow">
+            <h3 class="text-center pb-4">Faça seu Login!</h3>
+            {{form.csrf_token}}
+
+            {{form.email.label()}}
+            {{form.email(class="form-control")}}
+
+            {{form.senha.label()}}
+            {{form.senha(class="form-control")}}
+
+            {{form.btnSubmit(class="btn btn-primary col-12 mt-3")}}
+
+            <hr>
+            <div class="col-12 mt-4">
+                Não tem cadastro?
+                <a href="{{url_for('cadastro')}}">Faça o seu cadastro!</a>
+            </div>
+        </form>
+        {% endif %}
+        <hr>
+
+        <img src="{{url_for('static', filename='img/logo-senai.png')}}">
+    </div>
+</div>
+{% endblock %}

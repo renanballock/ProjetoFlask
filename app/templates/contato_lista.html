@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="container">
+        <div>
+            {% include 'nav.html' %}
+            <hr>
+        </div>
+            <div class="row mt-4 text-center">
+                <h3>Lista de Contatos</h3>
+            </div>
+            <form method="get" class="row mb-5">
+                <div class="col-9">
+                    <input type="text" name="pesquisa" class="form-control">
+                </div>
+                <div class="col-3">
+                    <button type="submit" class="btn btn-primary">Pesquisa</button>
+                </div>
+            </form>
+            <div class="col-12">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>E-Mail</th>
+                            <th>Assunto</th>
+                            <th>Respondido</th>
+                            <th>Detalhes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for linha in context['dados'] %}
+                        <tr>
+                            <td>{{linha.nome}}</td>
+                            <td>{{linha.email}}</td>
+                            <td>{{linha.assunto}}</td>
+                            <td>
+                                {% if linha.respondido == 1 %} <!-- tudo com porcentagem é um tipo de operação (if, else, for) -->
+                                    Sim
+                                {% else %}
+                                    Não
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{{url_for('contatoDetail', id=linha.id)}}" class="btn btn-light px-1 pb-0 pt-0">
+                                    <img src="{{url_for('static', filename='img/discord.png')}}" style="width: 20px;">
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
